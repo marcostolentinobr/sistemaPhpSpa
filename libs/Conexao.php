@@ -119,6 +119,18 @@ class Conexao {
         return $this->prepareExecute($sql, array_merge($dadosAlterar['valores'], $dadosWhere['valores']));
     }
 
+    public function addWhereOr($valores) {
+        foreach ($valores as $coluna => $valor) {
+            $valor = addslashes($valor);
+            if ($coluna == 0) {
+                $busca = "( $coluna = '$valor'";
+            } else {
+                $busca .= " OR $coluna = '$valor'";
+            }
+        }
+        $this->addWhere('', $busca . ' )', ' ');
+    }
+
     private function ultimoInsertId() {
         $this->where = [];
 

@@ -5,6 +5,7 @@ class Controller {
     protected $retorno;
     protected $Model;
     protected $post;
+    protected $colunaUnica = [];
 
     public function __construct() {
 
@@ -42,9 +43,14 @@ class Controller {
     }
 
     protected function incluir() {
-        $this->retorno['status'] = 'ok';
-        $this->retorno['mensagem'] = $this->post['NOME'] . ' incluído(a)';
-        $execute = $this->Model->incluir($this->tabela, $this->post);
+        $this->retorno['status'] = 'erro';
+        $this->retorno['mensagem'] = "$this->descricao " . implode(' ou ', $this->colunaUnica) . ' já existe';
+        $existeDado = $this->valorExistente();
+        if (!$existeDado) {
+            $this->retorno['status'] = 'ok';
+            $this->retorno['mensagem'] = $this->post['NOME'] . ' incluído(a)';
+            $execute = $this->Model->incluir($this->tabela, $this->post);
+        }
     }
 
     protected function excluir() {
@@ -57,7 +63,8 @@ class Controller {
     protected function buscar() {
         $this->retorno['status'] = 'ok';
         $this->retorno['mensagem'] = "$this->descricao listado(a)";
-        $DADO = $this->Model->listar([$this->ID_CHAVE => CHAVE]);
+        $this->Model->addWhere($this->ID_CHAVE, CHAVE);
+        $DADO = $this->Model->listar();
         $this->retorno['dado'] = @$DADO[0];
         if (!$DADO) {
             $this->retorno['status'] = 'erro';
@@ -66,10 +73,24 @@ class Controller {
     }
 
     protected function alterar() {
-        $this->retorno['status'] = 'ok';
-        $this->retorno['mensagem'] = $this->post['NOME'] . ' alterado(a)';
-        $this->Model->addWhere($this->ID_CHAVE, CHAVE, 'updateExcluir');
-        $execute = $this->Model->alterar($this->tabela, $this->post);
+        $this->retorno['status'] = 'erro';
+        $this->retorno['mensagem'] = "$this->descricao " . implode(' ou ', $this->colunaUnica) . ' já existe';
+        $existeDado = $this->valorExistente();
+        if (!$existeDado) {
+            $this->retorno['status'] = 'ok';
+            $this->retorno['mensagem'] = $this->post['NOME'] . ' incluído(a)';
+            $this->Model->addWhere($this->ID_CHAVE, CHAVE, 'updateExcluir');
+            $execute = $this->Model->alterar($this->tabela, $this->post);
+        }
+    }
+
+    protected function valorExistente() {
+        $valores = [];
+        foreach ($this->colunaUnica as $coluna) {
+            $valores[$coluna] = $this->post[$coluna];
+        }
+        $this->Model->addWhereOr($valores);
+        return @$this->Model->listar()[0];
     }
 
 }

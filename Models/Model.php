@@ -15,14 +15,7 @@ class Model extends Conexao {
         $this->ID_CHAVE = $model[1];
     }
 
-    protected function listaRetorno($sql, $where = []) {
-        $this->setBuscarLista();
-
-        if ($where) {
-            foreach ($where as $col => $val) {
-                $this->addWhere($col, $val);
-            }
-        }
+    protected function listaRetorno($sql) {
 
         //Orendação
         if (isset($_GET['order'])) {
@@ -59,18 +52,5 @@ class Model extends Conexao {
         return $retorno;
     }
 
-    private function setBuscarLista() {
-        if ($this->valorBuscar) {
-            $busca = '';
-            foreach ($this->buscarCampos as $ind => $campo) {
-                if ($ind == 0) {
-                    $busca = "( $campo LIKE '%$this->valorBuscar%'";
-                } else {
-                    $busca .= " OR $campo LIKE '%$this->valorBuscar%'";
-                }
-            }
-            $this->addWhere('', $busca . ' )', ' ');
-        }
-    }
 
 }
