@@ -1,4 +1,11 @@
-var DADOS = ['NOME'];
+var DADOS = [];
+
+for (var dado of FORM.elements) {
+    if(dado.id && dado.id != 'ACAO' ){
+        DADOS.push(dado.id);
+    }
+}
+
 var classe = document.currentScript.src.split('/')[6].replace('Script.js', '');
 var urlController = 'api/' + classe;
 
