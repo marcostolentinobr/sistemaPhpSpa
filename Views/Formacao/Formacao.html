@@ -1,0 +1,33 @@
+<td style="text-align: right;">
+    <h2 style="text-align: center">Formação</h2> 
+    <table border="1" style="width: 100%">
+        <thead>
+            <tr>
+                <th>NOME</th>
+                <th>PONTOS</th>
+                <th style="width: 1%">Ações</th>
+            </tr>                        
+        </thead>
+        <tbody id="TBODY">
+            <!-- AQUI VEM O CONTEUDO DO AJAX -->
+        </tbody>
+    </table>
+</td>
+<td style="padding-left: 10px">
+    <h3 id="ACAO_TITULO" style="text-align: center">Incluir</h3> 
+    <form id="FORM" method='POST' onsubmit="return incluir()">
+
+        <!-- NOME -->
+        <label for="NOME">Nome:</label>
+        <input type="text" id="NOME" maxlength="100" required><br>
+
+        <!-- FORMAÇÃO -->
+        <label for="PONTO">Pontos:</label>
+        <input  type="number" id="PONTO" min="1" max="99" required ><br>
+
+        <hr>
+        <input id="ACAO" type="submit" value="Incluir">
+        <input type="button" value="Cancelar" onclick="formReset()">
+
+    </form>
+</td>

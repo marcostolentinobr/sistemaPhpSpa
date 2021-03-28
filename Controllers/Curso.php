@@ -8,7 +8,7 @@ class Curso extends Controller {
 
     protected function incluir() {
         $this->retorno['status'] = 'erro';
-        $this->retorno['mensagem'] = $this->post['NOME'] . ' já existe';
+        $this->retorno['mensagem'] = "$this->descricao " . $this->post['NOME'] . ' já existe';
 
         $existeDado = $this->Model->listar(['NOME' => $this->post['NOME']]);
         if (!$existeDado) {
@@ -18,7 +18,7 @@ class Curso extends Controller {
 
     protected function alterar() {
         $this->retorno['status'] = 'erro';
-        $this->retorno['mensagem'] = $this->post['NOME'] . ' já existe';
+        $this->retorno['mensagem'] = "$this->descricao " . $this->post['NOME'] . ' já existe';
 
         $DADO = @$this->Model->listar(['NOME' => $this->post['NOME']])[0];
         if (!$DADO || $DADO[$this->ID_CHAVE] == CHAVE) {

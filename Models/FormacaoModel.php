@@ -1,6 +1,6 @@
 <?
 
-class CursoModel extends Conexao {
+class FormacaoModel extends Conexao {
 
     private $ID_CHAVE;
 
@@ -12,11 +12,11 @@ class CursoModel extends Conexao {
     public function listar($CONSULTA = []) {
         $whereExecute = $this->whereExecute($CONSULTA);
         $sql = "
-            SELECT C.$this->ID_CHAVE AS ID,
-                   C.* 
-              FROM CURSO C 
+            SELECT F.$this->ID_CHAVE AS ID,
+                   F.*
+              FROM FORMACAO F
                    $whereExecute[where] 
-          ORDER BY C.NOME
+           ORDER BY F.PONTO DESC
         ";
 
         $prepare = $this->pdo->prepare($sql);
@@ -28,7 +28,7 @@ class CursoModel extends Conexao {
 
     public function incluir($DADOS) {
         $prepare = $this->pdo->prepare('
-            INSERT INTO CURSO ( NOME ) VALUES (:NOME)
+            INSERT INTO FORMACAO ( NOME, PONTO ) VALUES (:NOME, :PONTO)
         ');
 
         return $prepare->execute($DADOS);
@@ -36,7 +36,7 @@ class CursoModel extends Conexao {
 
     public function excluir($DADOS) {
         $prepare = $this->pdo->prepare("
-            DELETE FROM CURSO WHERE $this->ID_CHAVE = :$this->ID_CHAVE
+            DELETE FROM FORMACAO WHERE $this->ID_CHAVE = :$this->ID_CHAVE
         ");
 
         return $prepare->execute($DADOS);
@@ -44,7 +44,9 @@ class CursoModel extends Conexao {
 
     public function alterar($DADOS) {
         $prepare = $this->pdo->prepare("
-            UPDATE CURSO SET NOME = :NOME
+            UPDATE FORMACAO 
+               SET NOME = :NOME,
+                  PONTO = :PONTO
              WHERE $this->ID_CHAVE = :$this->ID_CHAVE
         ");
 

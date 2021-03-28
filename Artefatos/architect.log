@@ -1,0 +1,204 @@
+0    [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ArchitectUtils  - Log4J configured successfully
+563  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+656  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+656  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+719  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+4955 [Thread-5] ERROR ca.sqlpower.architect.swingui.action.CheckForUpdateAction  - Fail to retrieve current version number!
+91578 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+CREATE TABLE USUARIO (
+                ID_USUARIO BIGINT AUTO_INCREMENT NOT NULL,
+                CPF VARCHAR(11) NOT NULL,
+                NOME VARCHAR(50) NOT NULL,
+                SENHA VARCHAR(20) NOT NULL,
+                PRIMARY KEY (ID_USUARIO)
+)
+91579 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE UNIQUE INDEX usuario_idx
+ ON USUARIO
+ ( CPF )
+91580 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE FORMACAO (
+                ID_FORMACAO BIGINT AUTO_INCREMENT NOT NULL,
+                NOME VARCHAR(50) NOT NULL,
+                PONTO CHAR(2) NOT NULL,
+                PRIMARY KEY (ID_FORMACAO)
+)
+91580 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE UNIQUE INDEX formacao_idx
+ ON FORMACAO
+ ( PONTO )
+91580 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE UNIQUE INDEX formacao_idx1
+ ON FORMACAO
+ ( NOME )
+91581 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE CURSO (
+                ID_CURSO BIGINT AUTO_INCREMENT NOT NULL,
+                NOME VARCHAR(50) NOT NULL,
+                PRIMARY KEY (ID_CURSO)
+)
+91581 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE UNIQUE INDEX curso_idx
+ ON CURSO
+ ( NOME )
+91581 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE PESSOA (
+                ID_PESSOA BIGINT AUTO_INCREMENT NOT NULL,
+                ID_CURSO BIGINT NOT NULL,
+                NOME VARCHAR(50) NOT NULL,
+                OBSERVACAO VARCHAR(1000),
+                ID_USUARIO BIGINT NOT NULL,
+                PRIMARY KEY (ID_PESSOA)
+)
+91582 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE UNIQUE INDEX pessoa_idx
+ ON PESSOA
+ ( NOME )
+91582 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE PESSOA_FORMACAO (
+                ID_FORMACAO BIGINT NOT NULL,
+                ID_PESSOA BIGINT NOT NULL,
+                PRIMARY KEY (ID_FORMACAO, ID_PESSOA)
+)
+91584 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+ALTER TABLE PESSOA ADD CONSTRAINT usuario_pessoa_fk
+FOREIGN KEY (ID_USUARIO)
+REFERENCES USUARIO (ID_USUARIO)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+91584 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE PESSOA_FORMACAO ADD CONSTRAINT id_formacao_pessoa_formacao_fk
+FOREIGN KEY (ID_FORMACAO)
+REFERENCES FORMACAO (ID_FORMACAO)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+91585 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE PESSOA ADD CONSTRAINT curso_pessoa_fk
+FOREIGN KEY (ID_CURSO)
+REFERENCES CURSO (ID_CURSO)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+91586 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE PESSOA_FORMACAO ADD CONSTRAINT pessoa_pessoa_formacao_fk
+FOREIGN KEY (ID_PESSOA)
+REFERENCES PESSOA (ID_PESSOA)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+91590 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - The list size is :14
+4086939 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+CREATE TABLE USUARIO (
+                ID_USUARIO BIGINT AUTO_INCREMENT NOT NULL,
+                CPF VARCHAR(11) NOT NULL,
+                NOME VARCHAR(50) NOT NULL,
+                SENHA VARCHAR(20) NOT NULL,
+                PRIMARY KEY (ID_USUARIO)
+)
+4086940 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE UNIQUE INDEX usuario_idx
+ ON USUARIO
+ ( CPF )
+4086940 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE FORMACAO (
+                ID_FORMACAO BIGINT AUTO_INCREMENT NOT NULL,
+                NOME VARCHAR(50) NOT NULL,
+                PONTO SMALLINT NOT NULL,
+                PRIMARY KEY (ID_FORMACAO)
+)
+4086941 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE UNIQUE INDEX formacao_idx
+ ON FORMACAO
+ ( PONTO )
+4086941 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE UNIQUE INDEX formacao_idx1
+ ON FORMACAO
+ ( NOME )
+4086942 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE CURSO (
+                ID_CURSO BIGINT AUTO_INCREMENT NOT NULL,
+                NOME VARCHAR(50) NOT NULL,
+                PRIMARY KEY (ID_CURSO)
+)
+4086942 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE UNIQUE INDEX curso_idx
+ ON CURSO
+ ( NOME )
+4086943 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE PESSOA (
+                ID_PESSOA BIGINT AUTO_INCREMENT NOT NULL,
+                ID_CURSO BIGINT NOT NULL,
+                NOME VARCHAR(50) NOT NULL,
+                OBSERVACAO VARCHAR(1000),
+                ID_USUARIO BIGINT NOT NULL,
+                PRIMARY KEY (ID_PESSOA)
+)
+4086943 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+CREATE UNIQUE INDEX pessoa_idx
+ ON PESSOA
+ ( NOME )
+4086944 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+CREATE TABLE PESSOA_FORMACAO (
+                ID_FORMACAO BIGINT NOT NULL,
+                ID_PESSOA BIGINT NOT NULL,
+                PRIMARY KEY (ID_FORMACAO, ID_PESSOA)
+)
+4086944 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+
+ALTER TABLE PESSOA ADD CONSTRAINT usuario_pessoa_fk
+FOREIGN KEY (ID_USUARIO)
+REFERENCES USUARIO (ID_USUARIO)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+4086945 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE PESSOA_FORMACAO ADD CONSTRAINT id_formacao_pessoa_formacao_fk
+FOREIGN KEY (ID_FORMACAO)
+REFERENCES FORMACAO (ID_FORMACAO)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+4086945 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE PESSOA ADD CONSTRAINT curso_pessoa_fk
+FOREIGN KEY (ID_CURSO)
+REFERENCES CURSO (ID_CURSO)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+4086945 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ddl.GenericDDLGenerator  - endStatement: 
+
+ALTER TABLE PESSOA_FORMACAO ADD CONSTRAINT pessoa_pessoa_formacao_fk
+FOREIGN KEY (ID_PESSOA)
+REFERENCES PESSOA (ID_PESSOA)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+4086946 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.SQLScriptDialog  - The list size is :14

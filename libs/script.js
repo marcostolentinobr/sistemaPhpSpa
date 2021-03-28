@@ -3,13 +3,11 @@ new Router([
     new Route('Curso'),
     new Route('Formacao')
 ]);
-function dados(id) {
+
+function dados() {
     var retorno = {};
     for (var dado of DADOS) {
         retorno[dado] = document.getElementById(dado).value;
-    }
-    if (id != undefined) {
-        retorno.ID = id;
     }
     return retorno;
 }
@@ -72,7 +70,7 @@ function editar(id) {
             setDados($DADO);
             ACAO_TITULO.innerHTML = 'Alterar'
             ACAO.value = 'Alterar'
-            FORM.setAttribute('onsubmit', 'return alterar(' + $DADO.ID_CURSO + ')');
+            FORM.setAttribute('onsubmit', 'return alterar(' + $DADO.ID + ')');
         } else {
             ACAO_MSG_OK.textContent = '';
             ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;

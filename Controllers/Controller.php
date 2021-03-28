@@ -18,7 +18,7 @@ class Controller {
         try {
             $model = $this->model;
             require_once "../Models/$model.php";
-            $this->Model = new $model();
+            $this->Model = new $model($this->ID_CHAVE);
             $this->post = json_decode(file_get_contents('php://input'), true);
             $Metodo = METODO;
             if (method_exists($this, $Metodo)) {

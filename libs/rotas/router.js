@@ -31,15 +31,15 @@ Router.prototype = {
             xhttp = new XMLHttpRequest();
             xhttp.onloadend = function () {
                 scope.rootElem.innerHTML = this.responseText;
-
-                var newScript = document.createElement("script");
-                newScript.src = 'Views/' + route.classe + '/' + route.classe + 'Script.js';
-                scope.rootElem.appendChild(newScript);
-
             };
 
             xhttp.open('GET', url, true);
             xhttp.send();
+
+            var newScript = document.createElement("script");
+            newScript.src = 'Views/' + route.classe + '/' + route.classe + 'Script.js';
+            scope.rootElem.appendChild(newScript);
+
         })(this);
     }
 };

@@ -25,6 +25,7 @@ function listar() {
                 for (var $dado of $LISTA) {
                     tr += '<tr>';
                     tr += ' <td>' + $dado.NOME + '</td>';
+                    tr += ' <td>' + $dado.PONTO + '</td>';
                     tr += ' <td> ';
                     tr += '  <button onclick="editar(' + $dado.ID + ')">Editar</button>';
                     tr += '  <button descricao="' + $dado.NOME + '" onclick="excluir(' + $dado.ID + ',this)">Excluir</button>';
