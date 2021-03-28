@@ -1,8 +1,8 @@
-//Menu
-new Router([
-    new Route('Curso'),
-    new Route('Formacao')
-]);
+var ROUTE = [];
+for (var dado of document.querySelectorAll('nav a')) {
+    ROUTE.push(new Route(dado.href.split('#')[1]));
+}
+new Router(ROUTE);
 
 function dados() {
     var retorno = {};

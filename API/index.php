@@ -49,18 +49,10 @@ define('CLASSE', isset($url[0]) ? $url[0] : '');
 define('METODO', isset($url[1]) ? $url[1] : '');
 define('CHAVE', isset($url[2]) ? $url[2] : '');
 
-//Model
-$FileModel = '../Models/' . CLASSE . 'Model.php';
-if (file_exists($FileModel)) {
-    require_once '../libs/Conexao.php';
-    require_once '../Models/Model.php';
-    require_once $FileModel;
-}
-
 //Controller
 $FileControler = '../Controllers/' . CLASSE . '.php';
+require_once '../Controllers/Controller.php';
 if (file_exists($FileControler)) {
-    require_once '../Controllers/Controller.php';
     require_once $FileControler;
 }
 
@@ -68,4 +60,7 @@ if (file_exists($FileControler)) {
 $Classe = CLASSE;
 if (class_exists($Classe)) {
     $Classe = new $Classe();
+} else {
+    $Classe = new Controller();
 }
+exit(json_encode($Classe->retorno));

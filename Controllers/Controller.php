@@ -2,7 +2,7 @@
 
 class Controller {
 
-    protected $retorno;
+    public $retorno;
     protected $Model;
     protected $post;
     protected $colunaUnica = [];
@@ -18,21 +18,32 @@ class Controller {
 
         try {
             $model = CLASSE . 'Model';
-            require_once "../Models/$model.php";
-            $this->Model = new $model([$this->tabela, $this->ID_CHAVE]);
-            $this->post = json_decode(file_get_contents('php://input'), true);
-            $Metodo = METODO;
-            if (method_exists($this, $Metodo)) {
-                $this->$Metodo();
-            } else {
+            $FileModel = "../Models/$model.php";
+            if (!file_exists($FileModel)) {
                 $this->retorno['status'] = 'erro';
-                $this->retorno['mensagem'] = 'Método não existe';
+                $this->retorno['mensagem'] = 'Classe não encontrada';
+                return;
             }
+            $this->acao($model, $FileModel);
         } catch (Exception $ex) {
             $this->retorno['status'] = 'erro';
             $this->retorno['mensagem'] = $ex->getMessage();
         }
-        exit(json_encode($this->retorno));
+    }
+
+    private function acao($model, $FileModel) {
+        require_once '../libs/Conexao.php';
+        require_once '../Models/Model.php';
+        require_once $FileModel;
+        $this->Model = new $model([$this->tabela, $this->ID_CHAVE]);
+        $this->post = json_decode(file_get_contents('php://input'), true);
+        $Metodo = METODO;
+        if (method_exists($this, $Metodo)) {
+            $this->$Metodo();
+        } else {
+            $this->retorno['status'] = 'erro';
+            $this->retorno['mensagem'] = 'Método não existe';
+        }
     }
 
     protected function listar() {
@@ -76,7 +87,7 @@ class Controller {
         $this->retorno['status'] = 'erro';
         $this->retorno['mensagem'] = "$this->descricao " . implode(' ou ', $this->colunaUnica) . ' já existe';
         $existeDado = $this->valorExistente();
-        if (!$existeDado) {
+        if (!$existeDado || $existeDado[$this->ID_CHAVE] == CHAVE) {
             $this->retorno['status'] = 'ok';
             $this->retorno['mensagem'] = $this->post['NOME'] . ' incluído(a)';
             $this->Model->addWhere($this->ID_CHAVE, CHAVE, 'updateExcluir');
