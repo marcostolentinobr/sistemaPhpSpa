@@ -1,3 +1,25 @@
+//Menu
+new Router([
+    new Route('Curso'),
+    new Route('Formacao')
+]);
+function dados(id) {
+    var retorno = {};
+    for (var dado of DADOS) {
+        retorno[dado] = document.getElementById(dado).value;
+    }
+    if (id != undefined) {
+        retorno.ID = id;
+    }
+    return retorno;
+}
+
+function setDados($DADOS) {
+    for (var dado of DADOS) {
+        document.getElementById(dado).value = $DADOS[dado];
+    }
+}
+
 function formReset() {
     ACAO_TITULO.innerHTML = 'Incluir'
     ACAO.value = 'Incluir'
@@ -5,120 +27,76 @@ function formReset() {
     FORM.reset();
 }
 
-function incluir() {
-
-    var $_POST = dados();
-    $_POST.ACAO = 'Incluir';
-
-    var ajax = new XMLHttpRequest();
-    ajax.open('POST', urlController);
-    ajax.onload = function () {
-        var $RETORNO = JSON.parse(ajax.responseText);
-        if ($RETORNO.status == 'ok') {
-
-            //Mensagem
-            ACAO_MSG_OK.textContent = $RETORNO.mensagem;
-            ACAO_MSG_ERRO.textContent = '';
-
-            //Listar
-            listar();
-        } else {
-            ACAO_MSG_OK.textContent = '';
-            ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;
-        }
+function retorno(resposta) {
+    var $RETORNO = JSON.parse(resposta);
+    if ($RETORNO.status == 'ok') {
+        ACAO_MSG_OK.textContent = $RETORNO.mensagem;
+        ACAO_MSG_ERRO.textContent = '';
+        listar();
+    } else {
+        ACAO_MSG_OK.textContent = '';
+        ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;
     }
+}
 
-    ajax.send(JSON.stringify($_POST));
+function incluir() {
+    var ajax = new XMLHttpRequest();
+    ajax.open('POST', urlController + '/incluir');
+    ajax.onload = function () {
+        retorno(ajax.responseText)
+    }
+    ajax.send(JSON.stringify(dados()));
     return false;
 }
 
 function excluir(id, elemento) {
     var descricao = elemento.getAttribute('descricao');
     if (confirm('Confirma exclusão de ' + descricao + ' ?')) {
-
-        var $_POST = {
-            ACAO: 'Excluir',
-            ID: id,
-            descricao: descricao
-        };
-
         var ajax = new XMLHttpRequest();
-        ajax.open('POST', urlController);
+        ajax.open('DELETE', urlController + '/excluir/' + id);
         ajax.onload = function () {
-            var $RETORNO = JSON.parse(ajax.responseText);
-            if ($RETORNO.status == 'ok') {
-
-                //Mensagem
-                ACAO_MSG_OK.textContent = $RETORNO.mensagem;
-                ACAO_MSG_ERRO.textContent = '';
-
-                //Listar
-                listar();
-            } else {
-                ACAO_MSG_OK.textContent = '';
-                ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;
-            }
+            retorno(ajax.responseText);
         }
-
-        ajax.send(JSON.stringify($_POST));
+        ajax.send(JSON.stringify({descricao: descricao}));
     }
     return false;
 }
 
 function editar(id) {
-
-    var $_POST = {
-        ACAO: 'Buscar',
-        ID: id
-    };
-
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', urlController);
+    ajax.open('GET', urlController + '/buscar/' + id);
     ajax.onload = function () {
         var $RETORNO = JSON.parse(ajax.responseText);
         var $DADO = $RETORNO.dado;
         if ($RETORNO.status == 'ok') {
             setDados($DADO);
-
-            //Estrutura
             ACAO_TITULO.innerHTML = 'Alterar'
             ACAO.value = 'Alterar'
             FORM.setAttribute('onsubmit', 'return alterar(' + $DADO.ID_CURSO + ')');
-
         } else {
             ACAO_MSG_OK.textContent = '';
             ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;
         }
     }
-
-    ajax.send(JSON.stringify($_POST));
+    ajax.send(JSON.stringify());
     return false;
 }
 
 function alterar(id) {
-
-    var $_POST = dados();
-    $_POST.ACAO = 'Alterar';
-    $_POST.ID = id;
-
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', urlController);
+    ajax.open('PUT', urlController + '/alterar/' + id);
     ajax.onload = function () {
-        var $RETORNO = JSON.parse(ajax.responseText);
-        if ($RETORNO.status == 'ok') {
-
-            //Mensagem
-            ACAO_MSG_OK.textContent = $RETORNO.mensagem;
-            ACAO_MSG_ERRO.textContent = '';
-
-            //Lisar
-            listar();
-        } else {
-            ACAO_MSG_OK.textContent = '';
-            ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;
-        }
+        retorno(ajax.responseText);
     }
-
-    ajax.send(JSON.stringify($_POST));
+    ajax.onerror = function () {
+        alert('teste erro');
+    }
+    ajax.onabort = function () {
+        alert('teste aborto');
+    }
+    ajax.ontimeout = function () {
+        alert('teste tempo');
+    }
+    ajax.send(JSON.stringify(dados()));
     return false;
 }

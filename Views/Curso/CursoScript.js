@@ -1,24 +1,12 @@
-var urlController = 'Controllers/Curso.php';
-
-function dados() {
-    return {
-        NOME: NOME.value
-    };
-}
-
-function setDados($DADOS) {
-    NOME.value = $DADOS.NOME;
-}
+var DADOS = ['NOME'];
+var classe = document.currentScript.src.split('/')[6].replace('Script.js', '');
+var urlController = 'api/' + classe;
 
 function listar() {
     formReset();
-
-    var $_POST = {
-        ACAO: 'Listar'
-    };
-
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', urlController);
+    ajax.overrideMimeType('application/json');
+    ajax.open('GET', urlController + '/listar');
     ajax.onload = function () {
         var $RETORNO = JSON.parse(ajax.responseText);
         if ($RETORNO.status == 'ok') {
@@ -42,8 +30,6 @@ function listar() {
             ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;
         }
     }
-    ajax.send(JSON.stringify($_POST));
+    ajax.send();
 }
-
-//Listar
 listar();

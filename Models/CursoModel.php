@@ -1,7 +1,5 @@
 <?
 
-require_once '../libs/Conexao.php';
-
 class CursoModel extends Conexao {
 
     public function listar($CONSULTA = []) {
@@ -12,7 +10,6 @@ class CursoModel extends Conexao {
         $prepare->execute($whereExecute['execute']);
 
         $DADOS = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        //pr($DADOS); exit('<br>CursoModel->listar');
         return $DADOS;
     }
 
