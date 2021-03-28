@@ -9,6 +9,9 @@ define('DB_PASS', '');
 define('DB_CHARSET', 'utf8');
 
 //require_once '../bd_crudPhpMvcPdoJs.php';
+
+define('DB_CONVERTE_UTF8', FALSE);
+
 //PRINT_R PRE
 function pr($dado, $print_r = true) {
     echo '<pre>';
@@ -17,6 +20,24 @@ function pr($dado, $print_r = true) {
     } else {
         var_dump($dado);
     }
+}
+
+//Se não for um vai o outro
+function coalesce() {
+    foreach (func_get_args() as $arg) {
+        if (!empty($arg) || $arg === 0 || $arg === '0') {
+            return $arg;
+        }
+    }
+    return null;
+}
+
+//Eh sql serve?
+function ehSqlServer() {
+    if (DB_LIB == 'sqlsrv' || DB_LIB == 'dblib') {
+        return true;
+    }
+    return false;
 }
 
 //URL
@@ -32,7 +53,7 @@ define('CHAVE', isset($url[2]) ? $url[2] : '');
 $FileModel = '../Models/' . CLASSE . 'Model.php';
 if (file_exists($FileModel)) {
     require_once '../libs/Conexao.php';
-    //require_once '../Models/Model.php';
+    require_once '../Models/Model.php';
     require_once $FileModel;
 }
 

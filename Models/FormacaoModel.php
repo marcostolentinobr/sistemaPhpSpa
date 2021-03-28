@@ -1,13 +1,6 @@
 <?
 
-class FormacaoModel extends Conexao {
-
-    private $ID_CHAVE;
-
-    public function __construct($ID_CHAVE) {
-        parent::__construct();
-        $this->ID_CHAVE = $ID_CHAVE;
-    }
+class FormacaoModel extends Model {
 
     public function listar($CONSULTA = []) {
         $whereExecute = $this->whereExecute($CONSULTA);

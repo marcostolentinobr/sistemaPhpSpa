@@ -16,9 +16,9 @@ class Controller {
         ];
 
         try {
-            $model = $this->model;
+            $model = CLASSE . 'Model';
             require_once "../Models/$model.php";
-            $this->Model = new $model($this->ID_CHAVE);
+            $this->Model = new $model([$this->tabela, $this->ID_CHAVE]);
             $this->post = json_decode(file_get_contents('php://input'), true);
             $Metodo = METODO;
             if (method_exists($this, $Metodo)) {
@@ -44,13 +44,14 @@ class Controller {
     protected function incluir() {
         $this->retorno['status'] = 'ok';
         $this->retorno['mensagem'] = $this->post['NOME'] . ' incluído(a)';
-        $execute = $this->Model->incluir($this->post);
+        $execute = $this->Model->incluir($this->tabela, $this->post);
     }
 
     protected function excluir() {
         $this->retorno['status'] = 'ok';
         $this->retorno['mensagem'] = $this->post['descricao'] . ' excluído(a)';
-        $execute = $this->Model->excluir([$this->ID_CHAVE => CHAVE]);
+        $this->Model->addWhere($this->ID_CHAVE, CHAVE, 'updateExcluir');
+        $execute = $this->Model->excluir($this->tabela);
     }
 
     protected function buscar() {
@@ -67,8 +68,8 @@ class Controller {
     protected function alterar() {
         $this->retorno['status'] = 'ok';
         $this->retorno['mensagem'] = $this->post['NOME'] . ' alterado(a)';
-        $this->post[$this->ID_CHAVE] = CHAVE;
-        $execute = $this->Model->alterar($this->post);
+        $this->Model->addWhere($this->ID_CHAVE, CHAVE, 'updateExcluir');
+        $execute = $this->Model->alterar($this->tabela, $this->post);
     }
 
 }

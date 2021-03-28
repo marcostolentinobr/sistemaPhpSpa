@@ -86,15 +86,6 @@ function alterar(id) {
     ajax.onload = function () {
         retorno(ajax.responseText);
     }
-    ajax.onerror = function () {
-        alert('teste erro');
-    }
-    ajax.onabort = function () {
-        alert('teste aborto');
-    }
-    ajax.ontimeout = function () {
-        alert('teste tempo');
-    }
     ajax.send(JSON.stringify(dados()));
     return false;
 }
