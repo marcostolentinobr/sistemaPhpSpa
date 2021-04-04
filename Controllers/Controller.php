@@ -53,9 +53,17 @@ class Controller {
         $this->retorno['lista'] = $DADOS;
     }
 
+    protected function msgDescricaoColunaUnica() {
+        $descricaoColuna = [];
+        foreach ($this->colunaUnica as $coluna) {
+            $descricaoColuna[] = explode('/', $coluna)[1];
+        }
+        return $descricaoColuna;
+    }
+
     protected function incluir() {
         $this->retorno['status'] = 'erro';
-        $this->retorno['mensagem'] = "$this->descricao " . implode(' ou ', $this->colunaUnica) . ' já existe';
+        $this->retorno['mensagem'] = "$this->descricao " . implode(' ou ', $this->msgDescricaoColunaUnica()) . ' já existe';
         $existeDado = $this->valorExistente();
         if (!$existeDado) {
             $this->retorno['status'] = 'ok';
@@ -85,7 +93,7 @@ class Controller {
 
     protected function alterar() {
         $this->retorno['status'] = 'erro';
-        $this->retorno['mensagem'] = "$this->descricao " . implode(' ou ', $this->colunaUnica) . ' já existe';
+        $this->retorno['mensagem'] = "$this->descricao " . implode(' ou ', $this->msgDescricaoColunaUnica()) . ' já existe';
         $existeDado = $this->valorExistente();
         if (!$existeDado || $existeDado[$this->ID_CHAVE] == CHAVE) {
             $this->retorno['status'] = 'ok';
@@ -98,7 +106,9 @@ class Controller {
     protected function valorExistente() {
         $valores = [];
         foreach ($this->colunaUnica as $coluna) {
-            $valores[$coluna] = $this->post[$coluna];
+            $coluna = explode('/', $coluna)[0];
+            $colunaPost = explode('.', $coluna)[1];
+            $valores[$coluna] = $this->post[$colunaPost];
         }
         $this->Model->addWhereOr($valores);
         return @$this->Model->listar()[0];

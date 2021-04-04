@@ -5,7 +5,7 @@ class Model extends Conexao {
     protected $ID_CHAVE;
     protected $tabela;
     protected $valorBuscar;
-    public $paginacao = true;
+    public $paginacao = false;
     public $pagina_total = 8;
     public $keyChave = false;
 

@@ -7,15 +7,54 @@ new Router(ROUTE);
 function dados() {
     var retorno = {};
     for (var dado of DADOS) {
-        retorno[dado] = document.getElementById(dado).value;
+        var element = document.getElementById(dado);
+        retorno[dado] = element.value;
+        if (element.nodeName == 'SELECT') {
+            var OPTIONS = document.querySelectorAll('#' + dado + ' option:checked');
+            if (OPTIONS.length > 1) {
+                retorno[dado] = [];
+                OPTIONS.forEach(function (element, index) {
+                    retorno[dado][index] = element.value;
+                });
+            }
+        }
     }
     return retorno;
 }
 
-function setDados($DADOS) {
+function setDados($DADOS, id) {
     for (var dado of DADOS) {
         document.getElementById(dado).value = $DADOS[dado];
     }
+    editarOutros(id);
+}
+
+function editarOutros(id) {
+    console.log('Editar outros vazio')
+}
+
+function setOption(apiEndereco, ID, descricao) {
+    if (descricao == undefined) {
+        descricao = 'NOME';
+    }
+    var ajax = new XMLHttpRequest();
+    ajax.open('GET', 'api/' + apiEndereco);
+    ajax.onload = function () {
+        var $RETORNO = JSON.parse(ajax.responseText);
+        if ($RETORNO.status == 'ok') {
+            $LISTA = $RETORNO.lista;
+            if ($LISTA.length > 0) {
+                for (var $dado of $LISTA) {
+                    var option = document.createElement("option");
+                    option.text = $dado[descricao];
+                    option.value = $dado[ID];
+                    option.id = $dado[ID];
+                    document.getElementById(ID).add(option);
+                }
+            }
+        }
+    }
+    ajax.send();
 }
 
 function formReset() {
@@ -23,6 +62,17 @@ function formReset() {
     ACAO.value = 'Incluir'
     FORM.setAttribute('onsubmit', 'return incluir()');
     FORM.reset();
+    for (var dado of FORM.elements) {
+        if (dado.nodeName == 'SELECT') {
+            var OPTIONS = document.querySelectorAll('#' + dado.id + ' option:checked');
+            if (OPTIONS.length > 1) {
+                console.log(OPTIONS);
+                OPTIONS.forEach(function (element, index) {
+                    element.removeAttribute('selected');
+                });
+            }
+        }
+    }
 }
 
 function retorno(resposta) {
@@ -61,13 +111,14 @@ function excluir(id, elemento) {
 }
 
 function editar(id) {
+    formReset();
     var ajax = new XMLHttpRequest();
     ajax.open('GET', urlController + '/buscar/' + id);
     ajax.onload = function () {
         var $RETORNO = JSON.parse(ajax.responseText);
-        var $DADO = $RETORNO.dado;
+        $DADO = $RETORNO.dado;
         if ($RETORNO.status == 'ok') {
-            setDados($DADO);
+            setDados($DADO, id);
             ACAO_TITULO.innerHTML = 'Alterar'
             ACAO.value = 'Alterar'
             FORM.setAttribute('onsubmit', 'return alterar(' + $DADO.ID + ')');

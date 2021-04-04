@@ -33,7 +33,7 @@ function listar() {
                     tr += '</tr>';
                 }
             } else {
-                tr += '<tr><td colspan="3" style="text-align: center; color: blue">Sem dados</td></tr>';
+                tr += '<tr><td colspan="100%" style="text-align: center; color: blue">Sem dados</td></tr>';
             }
             TBODY.innerHTML = tr;
         } else {

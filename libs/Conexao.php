@@ -131,7 +131,7 @@ class Conexao {
         $this->addWhere('', $busca . ' )', ' ');
     }
 
-    private function ultimoInsertId() {
+    public function ultimoInsertId() {
         $this->where = [];
 
         //Windows
