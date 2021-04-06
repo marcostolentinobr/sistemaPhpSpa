@@ -9,14 +9,12 @@ function dados() {
     for (var dado of DADOS) {
         var element = document.getElementById(dado);
         retorno[dado] = element.value;
-        if (element.nodeName == 'SELECT') {
+        if (element.nodeName == 'SELECT' && element.hasAttribute('multiple')) {
             var OPTIONS = document.querySelectorAll('#' + dado + ' option:checked');
-            if (OPTIONS.length > 1) {
-                retorno[dado] = [];
-                OPTIONS.forEach(function (element, index) {
-                    retorno[dado][index] = element.value;
-                });
-            }
+            retorno[dado] = [];
+            OPTIONS.forEach(function (element, index) {
+                retorno[dado][index] = element.value;
+            });
         }
     }
     return retorno;
@@ -30,7 +28,7 @@ function setDados($DADOS, id) {
 }
 
 function editarOutros(id) {
-    console.log('Editar outros vazio')
+
 }
 
 function setOption(apiEndereco, ID, descricao) {
@@ -63,14 +61,11 @@ function formReset() {
     FORM.setAttribute('onsubmit', 'return incluir()');
     FORM.reset();
     for (var dado of FORM.elements) {
-        if (dado.nodeName == 'SELECT') {
+        if (dado.nodeName == 'SELECT' && dado.hasAttribute('multiple')) {
             var OPTIONS = document.querySelectorAll('#' + dado.id + ' option:checked');
-            if (OPTIONS.length > 1) {
-                console.log(OPTIONS);
-                OPTIONS.forEach(function (element, index) {
-                    element.removeAttribute('selected');
-                });
-            }
+            OPTIONS.forEach(function (element, index) {
+                element.removeAttribute('selected');
+            });
         }
     }
 }

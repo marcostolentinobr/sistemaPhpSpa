@@ -97,7 +97,7 @@ class Controller {
         $existeDado = $this->valorExistente();
         if (!$existeDado || $existeDado[$this->ID_CHAVE] == CHAVE) {
             $this->retorno['status'] = 'ok';
-            $this->retorno['mensagem'] = $this->post['NOME'] . ' incluído(a)';
+            $this->retorno['mensagem'] = $this->post['NOME'] . ' alterado(a)';
             $this->Model->addWhere($this->ID_CHAVE, CHAVE, 'updateExcluir');
             $execute = $this->Model->alterar($this->tabela, $this->post);
         }
