@@ -70,18 +70,6 @@ function formReset() {
     }
 }
 
-function retorno(resposta) {
-    var $RETORNO = JSON.parse(resposta);
-    if ($RETORNO.status == 'ok') {
-        ACAO_MSG_OK.textContent = $RETORNO.mensagem;
-        ACAO_MSG_ERRO.textContent = '';
-        listar();
-    } else {
-        ACAO_MSG_OK.textContent = '';
-        ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;
-    }
-}
-
 function incluir() {
     var ajax = new XMLHttpRequest();
     ajax.open('POST', urlController + '/incluir');
@@ -134,4 +122,20 @@ function alterar(id) {
     }
     ajax.send(JSON.stringify(dados()));
     return false;
+}
+
+function sair() {
+    localStorage.removeItem('usuario');
+    menuSair.style.display = 'none';
+    window.location.href = "#Usuario";
+    FORM.style.display = 'inline';
+}
+
+
+function tela() {
+    if (!localStorage.getItem('usuario')) {
+        menuSair.style.display = 'none';
+        window.location.href = "#Usuario";
+    }
+
 }

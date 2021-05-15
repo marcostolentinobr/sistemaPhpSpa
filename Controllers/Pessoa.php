@@ -3,8 +3,9 @@
 class Pessoa extends Controller {
 
     protected $descricao = 'Pessoa';
-    protected $tabela = 'PESSOA';
+    protected $tabela = 'PESSOA P';
     protected $ID_CHAVE = 'ID_PESSOA';
+    protected $order = 'F.NOME';
     protected $colunaUnica = ['P.NOME/Nome'];
 
     protected function incluir() {

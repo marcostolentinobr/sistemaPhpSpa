@@ -3,8 +3,9 @@
 class Curso extends Controller {
 
     protected $descricao = 'Curso';
-    protected $tabela = 'CURSO';
+    protected $tabela = 'CURSO C';
     protected $ID_CHAVE = 'ID_CURSO';
-    protected $colunaUnica = ['C.NOME'];
+    protected $order = 'C.NOME';
+    protected $colunaUnica = ['C.NOME/Nome'];
 
 }

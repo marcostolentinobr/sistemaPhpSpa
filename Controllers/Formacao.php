@@ -3,8 +3,9 @@
 class Formacao extends Controller {
 
     protected $descricao = 'Formação';
-    protected $tabela = 'FORMACAO';
+    protected $tabela = 'FORMACAO F';
     protected $ID_CHAVE = 'ID_FORMACAO';
-    protected $colunaUnica = ['F.NOME', 'F.PONTO'];
+    protected $order = 'F.PONTO';
+    protected $colunaUnica = ['F.NOME/Nome', 'F.PONTO/Ponto'];
 
 }

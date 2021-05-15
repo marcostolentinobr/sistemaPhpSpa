@@ -9,6 +9,10 @@ class Controller {
 
     public function __construct() {
 
+        $tabela = explode(' ', $this->tabela);
+        $this->tabela = $tabela[0];
+        $this->APELIDO = $tabela[1];
+
         $this->retorno = [
             'status' => 'erro',
             'mensagem' => 'Ação não confirmada',
@@ -35,7 +39,13 @@ class Controller {
         require_once '../libs/Conexao.php';
         require_once '../Models/Model.php';
         require_once $FileModel;
-        $this->Model = new $model([$this->tabela, $this->ID_CHAVE]);
+        $DADOS = [
+            'TABELA' => $this->tabela,
+            'ID_CHAVE' => $this->ID_CHAVE,
+            'ORDER' => $this->order,
+            'APELIDO' => $this->APELIDO
+        ];
+        $this->Model = new $model($DADOS);
         $this->post = json_decode(file_get_contents('php://input'), true);
         $Metodo = METODO;
         if (method_exists($this, $Metodo)) {

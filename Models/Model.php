@@ -5,14 +5,31 @@ class Model extends Conexao {
     protected $ID_CHAVE;
     protected $tabela;
     protected $valorBuscar;
+    protected $APELIDO;
+    protected $orderPadrao;
     public $paginacao = false;
     public $pagina_total = 8;
     public $keyChave = false;
 
     public function __construct($model) {
         parent::__construct();
-        $this->tabela = $model[0];
-        $this->ID_CHAVE = $model[1];
+        $this->tabela = $model['TABELA'];
+        $this->ID_CHAVE = $model['ID_CHAVE'];
+        $this->APELIDO = $model['APELIDO'];
+        if ($model['ORDER']) {
+            $this->orderPadrao = $model['ORDER'];
+        }
+    }
+
+    public function listar() {
+        $sql = "
+            SELECT $this->APELIDO.$this->ID_CHAVE AS ID,
+                   $this->APELIDO.*
+              FROM $this->tabela $this->APELIDO
+        ";
+        $this->addOrder($this->orderPadrao);
+        $DADOS = $this->listaRetorno($sql);
+        return $DADOS;
     }
 
     protected function listaRetorno($sql) {
@@ -51,6 +68,5 @@ class Model extends Conexao {
         }
         return $retorno;
     }
-
 
 }

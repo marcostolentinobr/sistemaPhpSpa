@@ -11,6 +11,18 @@ for (var dado of FORM.elements) {
     }
 }
 
+function retorno(resposta) {
+    var $RETORNO = JSON.parse(resposta);
+    if ($RETORNO.status == 'ok') {
+        ACAO_MSG_OK.textContent = $RETORNO.mensagem;
+        ACAO_MSG_ERRO.textContent = '';
+        listar();
+    } else {
+        ACAO_MSG_OK.textContent = '';
+        ACAO_MSG_ERRO.textContent = $RETORNO.mensagem;
+    }
+}
+
 function listar() {
     formReset();
     var ajax = new XMLHttpRequest();
@@ -42,3 +54,4 @@ function listar() {
     ajax.send();
 }
 listar();
+tela();
